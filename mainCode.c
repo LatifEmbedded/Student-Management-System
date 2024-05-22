@@ -13,7 +13,7 @@ struct node
     {
         char name[large];
         char id[less];
-        char country[large];
+        char age[large];
         char note[few];
     };
     struct node* next;
@@ -119,19 +119,16 @@ void enterStudent(struct node* newNode)
 {
     printf("STUDENT NAME : ");
     fgets(newNode->name, large, stdin);
-    printf("length = %d\n", strlen(newNode->name));
     deletNewLine(newNode->name);
-    printf("length = %d\n", strlen(newNode->name));
-    exit(0);
     printf("STUDENT ID : ");
     fgets(newNode->id, less, stdin);
     deletNewLine(newNode->id);
     printf("STUDENT NOTE : ");
     fgets(newNode->note, few, stdin);
     deletNewLine(newNode->note);
-    printf("STUDENT COUNTRY : ");
-    fgets(newNode->country, large, stdin);
-    deletNewLine(newNode->country);
+    printf("STUDENT age : ");
+    fgets(newNode->age, large, stdin);
+    deletNewLine(newNode->age);
 }
 short numberNode(struct node* START)
 {
@@ -157,7 +154,7 @@ void displayNode(struct node* START)
         {
             printf("STUDENT %d : \n", i+1);
             printf("\tNAME : %s\n", pointer->name);
-            printf("\tCOUNTRY : %s\n", pointer->country);
+            printf("\tage : %s\n", pointer->age);
             printf("\tID = %s\n", pointer->id);
             printf("\tNOTE : %s\n", pointer->note);
             printf("\n");
@@ -197,7 +194,7 @@ void searchStudent(struct node* START)
             {
                 system("cls");
                 printf("NAME : %s\n", p_current->name);
-                printf("COUNTRY : %s\n", p_current->country);
+                printf("age : %s\n", p_current->age);
                 printf("ID : %s\n", p_current->id);
                 printf("NOTE : %s\n", p_current->note);
             }
@@ -213,6 +210,7 @@ void deletNode(struct node** START)
         printf("NO STUDENT IN LIST TO DELET\n");
     else
     {
+        bool state = false;
         int i = 0;
         char *ID = calloc(less, sizeof(char));
         if(ID == NULL)
@@ -220,39 +218,48 @@ void deletNode(struct node** START)
         else
         {
             struct node* pointer = *START;
-            struct node* p_current = NULL;
-            struct node* p_prev = NULL;
+            struct node* pointer_current = NULL;
+            struct node* pointer_previous = NULL;
             printf("ID OF STUDENT YOU WANT DELET : ");
             fgets(ID, less, stdin);
             deletNewLine(ID);
-            if(strcmp(pointer->id, ID) == 0)
+            while(pointer != NULL)
             {
-                *START = pointer->next;
-                free(pointer);
-            }
-            else
-            {
-                while(pointer != NULL)
+                if(strcmp(pointer->id, ID) == 0)
                 {
-                    if(strcmp(pointer->next->id,ID) == 0)
-                    {
-                        p_current = pointer->next;
-                        p_prev = pointer;
-                        break;
-                    }
-                    pointer = pointer->next;
+                    state = true;
+                    pointer_current = pointer;
+                    break;
                 }
-                if(p_current->next == NULL)
+                pointer = pointer->next;
+            }
+            pointer = *START;
+            if(state == true)
+            {
+                if(pointer_current == *START)
                 {
-                    free(p_current);
-                    p_prev->next = NULL;
+                    *START = pointer_current->next;
+                    free(pointer_current);
+                }
+                else if(pointer_current->next == NULL)
+                {
+                    while(pointer->next != pointer_current)
+                        pointer = pointer->next;
+                    pointer_previous = pointer;
+                    pointer_previous->next = NULL;
+                    free(pointer_current);
                 }
                 else
                 {
-                    p_prev->next = p_current->next;
-                    free(p_current);
+                    while(pointer->next != pointer_current)
+                        pointer = pointer->next;
+                    pointer_previous = pointer;
+                    pointer_previous->next = pointer_current->next;
+                    free(pointer_current);
                 }
             }
+            else
+                printf("STUDENT IS NOT IN THE LIST\n");
         }
         free(ID);
     }
@@ -268,7 +275,7 @@ void beGing(void)
     printf("\n\t\t\t\tNOTE : \n");
     printf("\t\t\t\t\tFOR NAME MAX LENGTH IS 28\n");
     printf("\t\t\t\t\tFOR ID MAX LENGTH IS 8\n");
-    printf("\t\t\t\t\tFOR COUNTRY MAX LENGTH IS 28\n");
+    printf("\t\t\t\t\tFOR age MAX LENGTH IS 28\n");
     printf("\t\t\t\t\tFOR NOTE MAX LENGTH IS 5\n");
     printf("ENTER SPACE TO START : ");
     char value;
@@ -286,7 +293,7 @@ void exIt(struct node** START)
     if(*START == NULL)
     {
         printf("\t\t\t\t<<<<<<<< THANK YOU >>>>>>>>\n");
-        printf("\t\t\t\t\tNUMBER OF STUDENT  = %d\n", 0);
+        printf("\t\t\t\t\tNUMBER OF STUDENT = %d\n", 0);
     }
     else
     {
