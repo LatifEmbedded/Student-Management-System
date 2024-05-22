@@ -9,3 +9,6 @@ This is for learning purposes.
 #### Limitations :
 The program uses fixed-size arrays for storing strings, which may limit the maximum length of the input data.
 The program relies on the user to enter valid input and does not perform extensive input validation. 
+#### Use :
+Open the command line and compile the code 
+run the executable file and start playing with you simple database
